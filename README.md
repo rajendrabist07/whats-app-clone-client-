@@ -96,6 +96,17 @@ The backend `CLIENT_URL` must match this URL for CORS and cookies:
 CLIENT_URL=http://localhost:5173
 ```
 
+For Vercel production, set these environment variables in the Vercel dashboard:
+
+```env
+VITE_API_URL=https://YOUR_RENDER_PUBLIC_URL.onrender.com/api/v1
+VITE_SOCKET_URL=https://YOUR_RENDER_PUBLIC_URL.onrender.com
+```
+
+The Render service ID, for example `srv-d8a39t7avr4c73d4ji50`, is not the public browser URL. Use the public `https://...onrender.com` URL shown in the Render service dashboard.
+
+The active frontend reads these values from `src/config/env.js`. Local development has localhost defaults, but production requires the Vercel env variables to be present.
+
 ## Production Build
 
 ```bash
@@ -116,12 +127,12 @@ npm run lint
 
 ## Routing
 
-| Path | Component | Access |
-| --- | --- | --- |
-| `/login` | `LoginPage` | Public |
-| `/signup` | `SignupPage` | Public |
-| `/` | `ChatPage` | Protected |
-| `*` | Redirects to `/` | Protected by redirect target |
+| Path      | Component        | Access                       |
+| --------- | ---------------- | ---------------------------- |
+| `/login`  | `LoginPage`      | Public                       |
+| `/signup` | `SignupPage`     | Public                       |
+| `/`       | `ChatPage`       | Protected                    |
+| `*`       | Redirects to `/` | Protected by redirect target |
 
 ## API Client
 
@@ -162,7 +173,7 @@ auth: { token: localStorage.getItem('accessToken') }
 Expected server URL:
 
 ```env
-VITE_SOCKET_URL=http://localhost:5001
+VITE_SOCKET_URL=https://YOUR_RENDER_PUBLIC_URL.onrender.com
 ```
 
 ## Common Problems
@@ -182,7 +193,7 @@ Then restart Vite. Vite only loads env values when the dev server starts.
 Check the backend:
 
 ```env
-CLIENT_URL=http://localhost:5173
+CLIENT_URL=https://whats-app-clone-client-liart.vercel.app
 ```
 
 Also confirm the frontend uses `withCredentials: true`, which is already configured in `src/api/axios.config.js`.
