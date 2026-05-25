@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 import { useAuth } from '../hooks/useAuth';
+import { SOCKET_URL } from '../src/config/env';
 
 const SocketContext = createContext(null);
 
@@ -12,7 +13,7 @@ export const SocketProvider = ({ children }) => {
     useEffect(() => {
         if (!user) return;
 
-        socketRef.current = io(import.meta.env.VITE_SOCKET_URL, {
+        socketRef.current = io(SOCKET_URL, {
             auth: { token: localStorage.getItem('accessToken') },
             reconnection: true,
             reconnectionAttempts: 5,

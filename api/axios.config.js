@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { API_BASE_URL } from '../src/config/env';
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
+    baseURL: API_BASE_URL,
     withCredentials: true, // Send cookies with every request
     timeout: 10000,
 });
@@ -28,7 +29,7 @@ api.interceptors.response.use(
 
             try {
                 const { data } = await axios.post(
-                    `${import.meta.env.VITE_API_URL}/auth/refresh-token`,
+                    `${API_BASE_URL}/auth/refresh-token`,
                     {},
                     { withCredentials: true }
                 );

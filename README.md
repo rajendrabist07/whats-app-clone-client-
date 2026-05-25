@@ -105,7 +105,9 @@ VITE_SOCKET_URL=https://YOUR_RENDER_PUBLIC_URL.onrender.com
 
 The Render service ID, for example `srv-d8a39t7avr4c73d4ji50`, is not the public browser URL. Use the public `https://...onrender.com` URL shown in the Render service dashboard.
 
-The active frontend reads these values from `src/config/env.js`. Local development has localhost defaults, but production requires the Vercel env variables to be present.
+The active frontend reads these values from `src/config/env.js`. Local development reads `client/.env`, and production reads the Vercel environment variables.
+
+Do not set Vercel env values to `http://localhost:5001`. A deployed browser cannot reach your local backend. The build includes `scripts/check-env.mjs`, which fails Vercel builds if `VITE_API_URL` or `VITE_SOCKET_URL` points to localhost.
 
 ## Production Build
 
