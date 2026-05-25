@@ -7,9 +7,16 @@ const env = {
 
 const isVercel = env.VERCEL === '1';
 const loopbackPattern = /^https?:\/\/(localhost|127\.0\.0\.1|0\.0\.0\.0)(:\d+)?(\/|$)/i;
+const PRODUCTION_API_URL = 'https://whats-app-clone-server-ksph.onrender.com/api/v1';
 
 if (isVercel) {
-  assertProductionUrl('VITE_API_URL', env.VITE_API_URL, { required: true, mustIncludeApiBase: true });
+  const apiUrl = env.VITE_API_URL || PRODUCTION_API_URL;
+
+  if (!env.VITE_API_URL) {
+    console.warn(`VITE_API_URL is not set. Using default production API URL: ${PRODUCTION_API_URL}`);
+  }
+
+  assertProductionUrl('VITE_API_URL', apiUrl, { required: true, mustIncludeApiBase: true });
   assertProductionSocketUrl(env.VITE_SOCKET_URL);
 }
 

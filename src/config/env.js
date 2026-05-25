@@ -1,9 +1,11 @@
 const trimTrailingSlash = (value) => value?.trim().replace(/\/$/, '');
 const isLoopbackUrl = (value) => /^https?:\/\/(localhost|127\.0\.0\.1|0\.0\.0\.0)(:\d+)?(\/|$)/i.test(value);
 const isHttpUrl = (value) => /^https?:\/\//i.test(value);
+const PRODUCTION_API_URL = 'https://whats-app-clone-server-ksph.onrender.com/api/v1';
 
 const requireEnv = (key) => {
-  const value = trimTrailingSlash(import.meta.env[key]);
+  const fallback = import.meta.env.PROD && key === 'VITE_API_URL' ? PRODUCTION_API_URL : '';
+  const value = trimTrailingSlash(import.meta.env[key] || fallback);
 
   if (!value) {
     throw new Error(`Missing required environment variable: ${key}`);
