@@ -10,7 +10,7 @@ const loopbackPattern = /^https?:\/\/(localhost|127\.0\.0\.1|0\.0\.0\.0)(:\d+)?(
 
 if (isVercel) {
   assertProductionUrl('VITE_API_URL', env.VITE_API_URL, { required: true, mustIncludeApiBase: true });
-  assertProductionUrl('VITE_SOCKET_URL', env.VITE_SOCKET_URL, { required: false });
+  assertProductionSocketUrl(env.VITE_SOCKET_URL);
 }
 
 function assertProductionUrl(key, value, { required, mustIncludeApiBase = false } = {}) {
@@ -32,6 +32,17 @@ function assertProductionUrl(key, value, { required, mustIncludeApiBase = false 
   if (mustIncludeApiBase && !value.replace(/\/$/, '').endsWith('/api/v1')) {
     throw new Error(`${key} must end with /api/v1: ${value}`);
   }
+}
+
+function assertProductionSocketUrl(value) {
+  if (!value) return;
+
+  if (loopbackPattern.test(value)) {
+    console.warn(`VITE_SOCKET_URL points to localhost and will be ignored in production: ${value}`);
+    return;
+  }
+
+  assertProductionUrl('VITE_SOCKET_URL', value, { required: false });
 }
 
 function readDotEnv(path) {
